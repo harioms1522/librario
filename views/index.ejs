@@ -11,11 +11,26 @@
     <%- include("./header.ejs") %>
     <section class="books-section">
       <div class="container">
-        <h2 class="main-heading imp-text">Top read this week!</h2>
+        <h2 class="main-heading imp-text">Hello</h2>
         <div class="grid-books">
           <% for(let book of books){ %>
           <div class="card-book">
-            <img src="<%= book %>" alt="book-image" />
+            <div class="summary hidden">
+              <ul class="book-summary">
+                <li class="summary-item">
+                  <span class="imp-text">Name:</span><%=book.name%>
+                </li>
+                <li class="summary-item">
+                  <span class="imp-text">Category:</span><%= book.category%>
+                </li>
+                <li class="summary-item">
+                  <span class="imp-text">Summary:</span><%=book.summary%>
+                </li>
+              </ul>
+            </div>
+            <div class="book-img">
+              <img src="<%= book.img %>" alt="book-image" />
+            </div>
           </div>
           <% } %>
         </div>
@@ -23,3 +38,31 @@
     </section>
   </body>
 </html>
+
+<!-- <section class="books-section">
+      <div class="container">
+        <h2 class="main-heading imp-text">Top read this week!</h2>
+        <div class="grid-books">
+          <% for(let book of books){ %>
+          <div class="card-book">
+            <div class="summary hidden">
+              <ul class="book-summary">
+                <li class="summary-item">
+                  <span class="imp-text">Name:</span><%=book.name%>
+                </li>
+                <li class="summary-item">
+                  <span class="imp-text">Category:</span><%= book.category%>
+                </li>
+                <li class="summary-item">
+                  <span class="imp-text">Summary:</span><%=book.summary%>
+                </li>
+              </ul>
+            </div>
+            <div class="book-img">
+              <img src="<%= book %>" alt="book-image" />
+            </div>
+          </div>
+          <% } %>
+        </div>
+      </div>
+    </section> -->

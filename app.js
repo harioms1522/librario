@@ -5,7 +5,9 @@ const morgan = require("morgan");
 
 // controllers
 const homePageController = require("./controllers/homePageController");
+
 const { userBookGalleryController } = require("./controllers/booksController");
+
 const {
   signupController,
   signinController,
@@ -13,10 +15,15 @@ const {
   userSignup,
   userLogout,
 } = require("./controllers/authController");
+
 const {
   userHomePageController,
   verifyUser,
 } = require("./controllers/userHomePageController");
+
+// Routers
+const booksRouter = require("./routes/booksRouter");
+const usersRouter = require("./routes/userRouter");
 
 // App to be used for routing
 const app = express();
@@ -51,6 +58,10 @@ app.route("/auth/signup").post(userSignup, userHomePageController);
 app.route("/auth/logout").get(userLogout);
 
 // protected route for just a user
-app.route("/home/book-gallery").get(userBookGalleryController);
+// app.route("/home/book-gallery").get(userBookGalleryController);
+
+// Books API
+app.use("/api/v1/books", booksRouter);
+app.use("/api/v1/users", usersRouter);
 
 module.exports = app;
