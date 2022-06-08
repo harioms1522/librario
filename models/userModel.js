@@ -31,6 +31,11 @@ const userSchema = new mongoose.Schema({
       message: "Passwords don't match!",
     },
   },
+  role: {
+    type: String,
+    enum: ["Admin", "user"],
+    default: "user",
+  },
 });
 
 // instance method
