@@ -1,0 +1,144 @@
+/* colors */
+/* #22577A
+38A3A5
+57CC99
+80ED99
+C7F9CC */
+
+/* GENERAL */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  font-size: 40%;
+}
+
+/* Utility classes */
+.imp-text {
+  color: #22577a;
+}
+
+body {
+  font-family: sans-serif;
+  line-height: 1;
+  font-weight: 400;
+}
+
+/* header nav */
+header {
+  width: 100%;
+}
+
+.header {
+  display: grid;
+  grid-template-columns: 3fr 10fr;
+  background-color: #c7f9cc;
+  height: 10rem;
+  align-items: center;
+}
+
+.logo {
+  font-size: 4.6rem;
+  justify-self: center;
+}
+
+.main-nav {
+  justify-self: end;
+  font-size: 2.8rem;
+}
+
+.main-nav-list {
+  list-style: none;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  justify-items: center;
+}
+
+.main-nav-list li {
+  margin-right: 2.4rem;
+}
+
+.main-nav-list li a {
+  text-decoration: none;
+  color: #333;
+}
+
+.main-nav-list li a:hover,
+.main-nav-list li a:active {
+  color: #22577a;
+}
+
+.signup {
+  background-color: #57cc99;
+  color: #fff;
+  padding: 0.6rem 2.8rem;
+  border-radius: 11px;
+}
+
+/* Books Section */
+.books-section {
+  background-color: #c7f9cc;
+  width: 100%;
+  padding-bottom: 2rem;
+  height: 90rem;
+}
+
+/* .container::before {
+  content: "";
+  z-index: -1;
+  position: absolute;
+  top: 0;
+  left: 0;
+  background: url("../img/main-background-2.jpg") no-repeat center;
+  width: 100%;
+  opacity: 0.7;
+} */
+
+.container {
+  max-width: 1200px;
+  margin: 0.6rem auto;
+  height: 90%;
+  background-color: #c7f9cc;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border-radius: 12px;
+  padding: 3rem 7rem;
+}
+
+.container h2 {
+  font-size: 5.4rem;
+  font-weight: 600;
+  margin: 1.6rem;
+}
+
+.grid-books {
+  max-width: 1300px;
+  align-self: stretch;
+  background-color: #57cc99;
+  border-radius: 12px;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr;
+  padding: 3.2rem;
+}
+
+.card-book {
+  height: 25rem;
+  width: 25rem;
+  border-radius: 15px;
+  background-color: #38a3a5;
+  justify-self: center;
+  box-shadow: 5px 1px 15px 3px #333;
+}
+
+.card-book img {
+  width: 100%;
+  z-index: -1;
+  border-radius: 12px;
+  object-fit: cover;
+  height: 100%;
+}

@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Home</title>
+    <link rel="stylesheet" href="../css/style.css" />
+    <link rel="stylesheet" href="../css/signup.css" />
+  </head>
+  <body>
+    <%- include("./header.ejs") %>
+
+    <div class="container">
+      <div class="signup-box">
+        <h2 class="imp-text">Sign Up</h2>
+        <form class="sign-up-form" action="/auth/signup" method="post">
+          <label for="name">Name</label>
+          <input type="text" name="name" id="name" /> <br />
+          <label for="email">Email:</label>
+          <input type="email" name="email" id="email" /> <br />
+          <label for="password">Password:</label>
+          <input type="password" name="password" id="password" /><br />
+          <label for="confirmPassword">Confirm Password:</label>
+          <input type="password" name="confirmPassword" id="confirmPassword" />
+          <br />
+          <input class="submit-btn" type="submit" value="SUBMIT" />
+        </form>
+        <br />
+        <p>
+          Already have an account?
+          <a href="/signin"><span class="important-txt">Sign-in</span></a>
+        </p>
+      </div>
+    </div>
+  </body>
+</html>
