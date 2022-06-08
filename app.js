@@ -25,6 +25,8 @@ const {
 const booksRouter = require("./routes/booksRouter");
 const usersRouter = require("./routes/userRouter");
 
+const { createTransaction } = require("./controllers/transactionController");
+
 // App to be used for routing
 const app = express();
 // COOKIE PARSER MIDDLEWARE
@@ -63,5 +65,6 @@ app.route("/auth/logout").get(userLogout);
 // Books API
 app.use("/api/v1/books", booksRouter);
 app.use("/api/v1/users", usersRouter);
+app.route("/transaction").post(createTransaction);
 
 module.exports = app;

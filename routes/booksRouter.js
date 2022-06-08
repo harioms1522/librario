@@ -7,16 +7,19 @@ const {
   createBook,
   updateBookById,
   deleteBookById,
-  getBookStats,
-  top5Suggestions,
+  getBooksStats,
+  getTop5Suggestions,
 } = require("../controllers/booksController");
 
 const router = express.Router();
 
+router.route("/getBooksStats").get(getBooksStats);
+router.route("/getTop5Suggestions").get(getTop5Suggestions);
+
 router
   .route("/")
   .get(getAllBooks)
-  .patch(createBook);
+  .post(createBook);
 
 router
   .route("/:id")

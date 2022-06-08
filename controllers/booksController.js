@@ -1,9 +1,60 @@
 const Book = require("../models/bookModel");
+// User information who is using this API will come in the cookies transferred
+// which will then be passed in the req
 
 // For API
 const getAllBooks = async function(req, res, next) {
   try {
-    const books = await Book.find();
+    // This is the query
+    let books = Book.find();
+
+    /////////////////////////////////////////////////
+    // Filtering
+
+    // get the query string object
+    const queryObj = { ...req.query };
+
+    // Handling filter according to the field values
+    //  We want to exclude certain fields
+    const excludedFields = ["page", "sort", "limit", "fields"];
+    excludedFields.forEach((curr) => delete queryObj[curr]);
+
+    //implementing for the gte lte lt and gt features
+    let queryStr = JSON.stringify(queryObj);
+    queryStr = queryStr.replace(/\b(gte|lte|gt|lt)\b/g, (match) => `$${match}`);
+    console.log(queryStr);
+
+    ////////////////////////////////////////////////////
+    // Sorting
+    if (req.query.sort) {
+      const sortBy = req.query.sort.split(",").join(" ");
+      books = books.sort(sortBy);
+    } else {
+      books = books.sort("-createdAt");
+    }
+
+    // //////////////////////////////////////////////
+    // fields selection
+    if (req.query.fields) {
+      const fields = req.query.fields.split(",").join(" ");
+      books = books.select(fields);
+    } else {
+      books = books.select("-__v");
+    }
+
+    ////////////////////////////////////////////////////
+    // Pagination
+    const page = req.query.page * 1 || 1;
+    const limit = req.query.limit * 1 || 20;
+    const skip = (page - 1) * limit;
+
+    // console.log(limit);
+
+    books = books.skip(skip).limit(limit);
+
+    // just await it in the end
+    books = await books.find(JSON.parse(queryStr));
+
     res.status(200).json({
       status: "Success",
       data: {
@@ -11,7 +62,7 @@ const getAllBooks = async function(req, res, next) {
       },
     });
   } catch (err) {
-    console.log(err);
+    res.status(404).json({ status: "Failure", error: { err } });
   }
 };
 
@@ -27,28 +78,111 @@ const getBookById = async function(req, res, next) {
       },
     });
   } catch (err) {
-    res.status(404).json({
-      status: "failure",
-    });
+    res.status(404).json({ status: "Failure", error: { err } });
   }
 };
 
-const createBook = async function(req, res, next) {};
+const createBook = async function(req, res, next) {
+  try {
+    const book = await Book.create(req.body);
+    res.status(200).json({
+      status: "Success",
+      data: {
+        book,
+      },
+    });
+  } catch (err) {
+    res.status(404).json({ status: "Failure", error: { err } });
+  }
+};
 
-const updateBookById = async function(req, res, next) {};
+const updateBookById = async function(req, res, next) {
+  try {
+    const book = await Book.findByIdAndUpdate(req.params.id, req.body, {
+      new: true,
+      runValidators: true,
+    });
 
-const deleteBookById = async function(req, res, next) {};
+    if (!book) {
+      return new Error("No book found with this Id");
+    }
 
-const getBookStats = async function(req, res, next) {};
+    console.log(book);
+    res.status(200).json({
+      status: "success",
+      data: {
+        book,
+      },
+    });
+  } catch (err) {
+    res.status(404).json({ status: "Failure", error: { err } });
+  }
+};
 
-const top5Suggestions = async function(req, res, next) {};
+const deleteBookById = async function(req, res, next) {
+  const book = await Book.findByIdAndDelete(req.params.id);
+
+  if (!book) {
+    return new Error("No tour found with that ID");
+  }
+
+  res.status(204).json({
+    status: "success",
+    data: null,
+  });
+};
+
+const getBooksStats = async function(req, res, next) {
+  try {
+    const stats = await Book.aggregate([
+      {
+        $facet: {
+          booksCountByUser: [
+            { $unwind: "$assignedTo" },
+            { $sortByCount: "$assignedTo" },
+          ],
+          booksCountByCategory: [{ $sortByCount: "$category" }],
+          totalReviews: [
+            { $unwind: "$reviews" },
+            { $group: { _id: "$_id", count: { $sum: 1 } } },
+          ],
+        },
+      },
+    ]);
+
+    res.status(200).json({
+      status: "Success",
+      data: { stats },
+    });
+  } catch (err) {
+    res.status(404).json({ status: "Failure", error: { err } });
+  }
+};
+
+const getTop5Suggestions = async function(req, res, next) {
+  try {
+    const top5 = await Book.aggregate([
+      { $unwind: "$reviews" },
+      { $group: { _id: "$_id", count: { $sum: 1 } } },
+      { $sort: { count: 1 } },
+      { $limit: 5 },
+    ]);
+
+    res.status(200).json({
+      status: "Success",
+      data: { top5 },
+    });
+  } catch (err) {
+    res.status(404).json({ status: "Failure", error: { err } });
+  }
+};
 
 module.exports = {
   getAllBooks,
   getBookById,
   updateBookById,
   deleteBookById,
-  getBookStats,
-  top5Suggestions,
+  getBooksStats,
+  getTop5Suggestions,
   createBook,
 };
