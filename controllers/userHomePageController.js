@@ -12,16 +12,20 @@ async function userHomePageController(req, res, next) {
     const user = await User.findOne({ _id: userID });
 
     // Getting Books assigned to this user
-    const books = await Book.find({ assignedTo: userID });
+    const books = await Book.aggregate([
+      { $unwind: "$assignedTo" },
+      { $match: { assignedTo: { $eq: userID + "" } } },
+    ]);
+    // console.log(books);
 
-    //   console.log(books);
+    // let booksImgs = [];
+    // books.forEach((book) => {
+    //   booksImgs.push(book.img);
+    // });
 
-    let booksImgs = [];
-    books.forEach((book) => {
-      booksImgs.push(book.img);
-    });
+    // console.log(booksImgs);
 
-    res.render("user-index", { books: booksImgs, name: user.name, userID });
+    res.render("user-index", { books, name: user.name, userID });
   } catch (err) {
     console.log(err);
     res.status(500).render("404");

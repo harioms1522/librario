@@ -122,11 +122,57 @@ header {
   background-color: #57cc99;
   border-radius: 12px;
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr;
+  gap: 2rem;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
   padding: 3.2rem;
 }
 
 .card-book {
+  width: 100%;
+  /* width: 50rem;
+  height: 25rem; */
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: 15rem 1fr;
+  box-shadow: 5px 1px 15px 3px #333;
+  border-radius: 12px;
+}
+
+.book-img {
+  width: 100%;
+}
+
+.card-book img {
+  width: 100%;
+  /* z-index: -1; */
+  border-radius: 12px;
+  object-fit: cover;
+  height: 100%;
+}
+
+.summary {
+  width: 100%;
+  overflow-wrap: break-word;
+  justify-self: center;
+  align-self: start;
+
+  padding: 1.6rem 0.9rem;
+}
+
+.book-summary {
+  list-style: none;
+  max-width: 100%;
+  font-weight: 500;
+  font-size: 1.7rem;
+  text-align: match-parent;
+  overflow-wrap: break-word;
+}
+
+/* .card-book {
+  display: grid;
+}
+
+.book-img {
   height: 25rem;
   width: 25rem;
   border-radius: 15px;
@@ -134,11 +180,4 @@ header {
   justify-self: center;
   box-shadow: 5px 1px 15px 3px #333;
 }
-
-.card-book img {
-  width: 100%;
-  z-index: -1;
-  border-radius: 12px;
-  object-fit: cover;
-  height: 100%;
-}
+ */

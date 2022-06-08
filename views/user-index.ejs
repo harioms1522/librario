@@ -30,7 +30,26 @@
         <div class="grid-books">
           <% for(let book of books){ %>
           <div class="card-book">
-            <img src="<%= book %>" alt="book-image" />
+            <div class="summary hidden">
+              <ul class="book-summary">
+                <li class="summary-item">
+                  <span class="imp-text">Name:</span><%=book.name%>
+                </li>
+                <li class="summary-item">
+                  <span class="imp-text">Category:</span><%= book.category%>
+                </li>
+                <li class="summary-item">
+                  <span class="imp-text">Summary:</span><%=book.summary%>
+                </li>
+              </ul>
+
+              <!-- <%=book.name%> <br />
+              <%=book.isbn%> <br />
+              <%=book.summary %> -->
+            </div>
+            <div class="book-img">
+              <img src="<%= book.img %>" alt="book-image" />
+            </div>
           </div>
           <% } %>
         </div>
