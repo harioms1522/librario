@@ -22,7 +22,7 @@ const getAllBooks = async function(req, res, next) {
     //implementing for the gte lte lt and gt features
     let queryStr = JSON.stringify(queryObj);
     queryStr = queryStr.replace(/\b(gte|lte|gt|lt)\b/g, (match) => `$${match}`);
-    console.log(queryStr);
+    // console.log(queryStr);
 
     ////////////////////////////////////////////////////
     // Sorting
@@ -69,7 +69,7 @@ const getAllBooks = async function(req, res, next) {
 const getBookById = async function(req, res, next) {
   try {
     const id = req.params.id;
-    console.log(id);
+    // console.log(id);
     const books = await Book.find({ _id: id });
     res.status(200).json({
       status: "Success",
@@ -84,6 +84,7 @@ const getBookById = async function(req, res, next) {
 
 const createBook = async function(req, res, next) {
   try {
+    console.log(req.body);
     const book = await Book.create(req.body);
     res.status(200).json({
       status: "Success",
@@ -107,7 +108,7 @@ const updateBookById = async function(req, res, next) {
       return new Error("No book found with this Id");
     }
 
-    console.log(book);
+    // console.log(book);
     res.status(200).json({
       status: "success",
       data: {
@@ -163,6 +164,7 @@ const getBooksStats = async function(req, res, next) {
           totalReviews: [
             { $unwind: "$reviews" },
             { $group: { _id: "$name", count: { $sum: 1 } } },
+            { $sort: { count: 1 } },
           ],
         },
       },

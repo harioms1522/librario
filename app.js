@@ -3,8 +3,13 @@ const cookieParser = require("cookie-parser");
 const express = require("express");
 const morgan = require("morgan");
 
+/////////////////////////////////////////////////////
 // controllers
 const homePageController = require("./controllers/homePageController");
+
+const {
+  adminPanelHomePageController,
+} = require("./controllers/adminPannelController");
 
 const { userBookGalleryController } = require("./controllers/booksController");
 
@@ -43,6 +48,7 @@ app.use(cookieParser());
 app.use("/css", express.static(__dirname + "/public/css"));
 app.use("/img", express.static(__dirname + "/public/img"));
 app.use("/js", express.static(__dirname + "/public/js"));
+app.use("/public", express.static(__dirname + "/public"));
 
 // view-engines
 app.set("view engine", "ejs");
@@ -61,6 +67,11 @@ app.route("/home").get(homePageController);
 app.route("/signup").get(signupController);
 app.route("/signin").get(signinController);
 
+// Rendering PAGE FOR ADMIN BOOKS MANAGEMENT
+app.route("/admin-panel").get(adminPanelHomePageController);
+
+// //////////////////////////////////////////////////////////
+// Will change these to API calls only
 // authorisation and actual user creation and login
 app.route("/auth/signin").post(userSignin, verifyUser, userHomePageController);
 app.route("/auth/signup").post(userSignup, userHomePageController);

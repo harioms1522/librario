@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 
 const bookSchema = new mongoose.Schema({
-  createdAt: { type: Date, default: new Date(), required: true },
+  createdAt: { type: Date, default: new Date().toUTCString(), required: true },
 
   name: {
     type: String,
@@ -32,7 +32,7 @@ const bookSchema = new mongoose.Schema({
 
   img: String,
 
-  price: Number,
+  price: String,
 });
 
 const Book = mongoose.model("Book", bookSchema);

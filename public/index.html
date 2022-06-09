@@ -6,11 +6,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Admin-Home</title>
     <link rel="stylesheet" href="./css/style-admin.css" />
+    <link rel="stylesheet" href="./css/style.css" />
     <link
       rel="stylesheet"
       type="text/css"
       href="//cdn.datatables.net/1.12.1/css/jquery.dataTables.min.css"
     />
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script
       type="text/javascript"
@@ -22,16 +24,68 @@
     <script src="./js/admin.js"></script>
   </head>
   <body>
+    <header>
+      <div class="header">
+        <div class="logo">
+          <p>Lib&Darr;<span class="imp-text">rary</span></p>
+        </div>
+        <nav class="main-nav">
+          <ul class="main-nav-list">
+            <li><a href="#">Admin's Panel</a></li>
+            <li><a href="#">About</a></li>
+            <li><a href="#">Catalogue</a></li>
+            <li><a href="#">Contact Us</a></li>
+            <li class="signup"><a href="/auth/logout">LogOut</a></li>
+          </ul>
+        </nav>
+      </div>
+    </header>
     <section>
       <div class="main-container">
-        <div class="main-table-selectors">
-          <div class="fields"></div>
-          <div class="sort"></div>
-          <div class="query"></div>
-          <div class="page"></div>
-          <div class="limit"></div>
+        <div class="book-controllers">
+          <!--  -->
+          <!-- Book adding form  -->
+          <div class="add-book">
+            <h1 class="table-heading">Add a book here</h1>
+            <form class="form" id="book-creation-form">
+              <label for="name">Name</label>
+              <input type="text" name="name" id="name" /> <br />
+
+              <label for="Category">Category</label>
+              <select name="category" id="category">
+                <option value="type1">Type 1</option>
+                <option value="type2">Type 2</option> </select
+              ><br />
+
+              <label for="author">Author</label>
+              <input type="text" name="author" id="author" /><br />
+
+              <label for="summary">Summary</label>
+              <input type="text" name="summary" id="summary" /><br />
+
+              <label for="price">Price</label>
+              <input type="number" name="price" id="price" /> <br />
+
+              <label for="isbn">ISBN</label>
+              <input type="isbn" name="isbn" id="price" /> <br />
+
+              <input type="submit" value="SUBMIT" class="book-post-btn" />
+            </form>
+          </div>
         </div>
         <div class="table-main table-container">
+          <h1 class="table-heading">
+            All Books!
+          </h1>
+          <div class="main-table-controllers">
+            <div class="fields"></div>
+            <div class="sort"></div>
+            <div class="query"></div>
+            <div class="page"></div>
+            <div class="limit"></div>
+          </div>
+          <!--  -->
+          <!-- MAIN TABLE -->
           <table id="main-table" class="display no-wrap">
             <thead>
               <tr>
@@ -53,11 +107,17 @@
                 <th>
                   Review
                 </th>
+                <th>
+                  Created At
+                </th>
               </tr>
             </thead>
           </table>
         </div>
         <div class="table-stats-1 table-container">
+          <h1 class="table-heading">
+            No of times a book is Assigned
+          </h1>
           <table id="stats-table-book-count-by-user" class="display">
             <thead>
               <tr>
@@ -68,12 +128,42 @@
           </table>
         </div>
         <div class="table-stats-2 table-container">
+          <h1 class="table-heading">
+            Users-Book Count
+          </h1>
           <table id="stats-table-per-user-books" class="display no-wrap">
             <thead>
               <tr>
                 <th>Name</th>
                 <th>Email</th>
                 <th>Book Count</th>
+              </tr>
+            </thead>
+          </table>
+        </div>
+        <div class="table-stats-3 table-container">
+          <h1 class="table-heading">
+            Book-Review Count
+          </h1>
+          <table id="stats-table-review-count-per-book" class="display no-wrap">
+            <thead>
+              <tr>
+                <th>Book</th>
+                <th>Total Reviews</th>
+              </tr>
+            </thead>
+          </table>
+        </div>
+        <div class="table-stats-4 table-container">
+          <h1 class="table-heading">Books Count By Category</h1>
+          <table
+            id="stats-table-books-count-by-category"
+            class="display no-wrap"
+          >
+            <thead>
+              <tr>
+                <th>Book Category</th>
+                <th>Count</th>
               </tr>
             </thead>
           </table>

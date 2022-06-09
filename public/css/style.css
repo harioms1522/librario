@@ -3,7 +3,8 @@
 38A3A5
 57CC99
 80ED99
-C7F9CC */
+C7F9CC 
+f1faee*/
 
 /* GENERAL */
 * {
@@ -13,7 +14,7 @@ C7F9CC */
 }
 
 html {
-  font-size: 40%;
+  font-size: 62.5%%;
 }
 
 /* Utility classes */
@@ -36,18 +37,18 @@ header {
   display: grid;
   grid-template-columns: 3fr 10fr;
   background-color: #c7f9cc;
-  height: 10rem;
+  padding: 0.6rem 0rem;
   align-items: center;
 }
 
 .logo {
-  font-size: 4.6rem;
+  font-size: 1.2rem;
   justify-self: center;
 }
 
 .main-nav {
   justify-self: end;
-  font-size: 2.8rem;
+  font-size: 0.9rem;
 }
 
 .main-nav-list {
@@ -111,10 +112,10 @@ header {
 }
 
 .container h2 {
-  font-size: 5.4rem;
+  font-size: 2.4rem;
   font-weight: 600;
-  margin: 1.6rem;
-  padding-bottom: 3rem;
+  margin: 0.6rem;
+  padding-bottom: 0.6rem;
 }
 
 .grid-books {
@@ -125,7 +126,7 @@ header {
   display: grid;
   gap: 2rem;
   grid-template-columns: 1fr 1fr;
-  padding: 3.2rem;
+  padding: 2.2rem;
 }
 
 .card-book {
@@ -134,7 +135,7 @@ header {
     height: 25rem; */
   display: grid;
   gap: 1rem;
-  grid-template-columns: 30rem 1fr;
+  grid-template-columns: 10rem 1fr;
   box-shadow: 5px 1px 15px 3px #333;
   border-radius: 12px;
 }
@@ -164,7 +165,7 @@ header {
   list-style: none;
   max-width: 100%;
   font-weight: 500;
-  font-size: 1.7rem;
+  font-size: 0.9rem;
   text-align: match-parent;
   overflow-wrap: break-word;
 }
