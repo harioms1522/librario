@@ -29,6 +29,13 @@ const { createTransaction } = require("./controllers/transactionController");
 
 // App to be used for routing
 const app = express();
+
+/////////////////////////////////////////////////////////
+// allowing CORS
+// only then I will be able to call the apis from client side
+const cors = require("cors");
+app.use(cors());
+
 // COOKIE PARSER MIDDLEWARE
 app.use(cookieParser());
 

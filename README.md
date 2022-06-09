@@ -7,3 +7,8 @@
     *time selection
     *Pagination
     *sort
+
+#price bucket report
+#category report
+#reviews report
+#books by user count

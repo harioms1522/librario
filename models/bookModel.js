@@ -6,6 +6,7 @@ const bookSchema = new mongoose.Schema({
   name: {
     type: String,
     required: [true, "Name is must!"],
+    unique: [true, "Name must be unique"],
   },
 
   isbn: {
@@ -30,6 +31,8 @@ const bookSchema = new mongoose.Schema({
   assignedTo: [String],
 
   img: String,
+
+  price: Number,
 });
 
 const Book = mongoose.model("Book", bookSchema);

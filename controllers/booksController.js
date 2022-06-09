@@ -139,12 +139,30 @@ const getBooksStats = async function(req, res, next) {
         $facet: {
           booksCountByUser: [
             { $unwind: "$assignedTo" },
-            { $sortByCount: "$assignedTo" },
+            // { $sortByCount: "$name" },
+            { $group: { _id: "$name", count: { $sum: 1 } } },
           ],
           booksCountByCategory: [{ $sortByCount: "$category" }],
+          perUserBooks: [
+            { $unwind: "$assignedTo" },
+            {
+              $addFields: {
+                objIdAssignedTo: { $toObjectId: "$assignedTo" },
+              },
+            },
+            {
+              $lookup: {
+                from: "users",
+                localField: "objIdAssignedTo",
+                foreignField: "_id",
+                as: "user",
+              },
+            },
+            { $sortByCount: "$user" },
+          ],
           totalReviews: [
             { $unwind: "$reviews" },
-            { $group: { _id: "$_id", count: { $sum: 1 } } },
+            { $group: { _id: "$name", count: { $sum: 1 } } },
           ],
         },
       },
