@@ -11,8 +11,8 @@
     <%- include("./header.ejs") %>
     <section class="books-section">
       <div class="container">
-        <h2 class="main-heading imp-text">Hello</h2>
         <div class="grid-books">
+          <h2 class="main-heading imp-text">Top Reads This Week!</h2>
           <% for(let book of books){ %>
           <div class="card-book">
             <div class="summary hidden">
@@ -30,6 +30,9 @@
             </div>
             <div class="book-img">
               <img src="<%= book.img %>" alt="book-image" />
+            </div>
+            <div class="subscribe-btn">
+              <button type="submit" class="btn subscribe-btn">SUBSCRIBE</button>
             </div>
           </div>
           <% } %>

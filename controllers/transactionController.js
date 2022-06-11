@@ -17,4 +17,6 @@ async function createTransaction(req, res, next) {
   }
 }
 
+async function subsScribeBook(req, res, next) {}
+
 module.exports = { createTransaction };

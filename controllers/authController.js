@@ -3,14 +3,26 @@ const app = require("../app");
 
 const User = require("../models/userModel");
 
-// Simple pages handling
-function signupController(req, res, next) {
-  res.render("sign_up");
-}
+// Functions
+const signToken = function(userID) {
+  return jwt.sign({ id: newUser._id }, process.env.JWT_SECRET, {
+    expiresIn: process.env.JWT_EXPIRY,
+  });
+};
 
-function signinController(req, res, next) {
-  res.render("sign_in");
-}
+const generateTokeAndSend = function(userID, res, user) {
+  const token = signToken(userID);
+
+  // Send the token to cookies
+  res.cookie("jwt", token);
+
+  // send the data for API
+  res.status(200).json({
+    status: success,
+    token,
+    data: { user },
+  });
+};
 
 // Actual authorization
 const userSignup = async function(req, res, next) {
@@ -22,16 +34,7 @@ const userSignup = async function(req, res, next) {
       confirmPassword: req.body.confirmPassword,
     });
 
-    // Create a JWT and save it in cookies
-    const token = jwt.sign({ id: newUser._id }, process.env.JWT_SECRET, {
-      expiresIn: process.env.JWT_EXPIRY,
-    });
-
-    req.cookies.authToken = `Bearer ${token}`;
-
-    // adding the details to the header to authenticate properly
-    req.headers.authorization = `Bearer ${token}`;
-    req.user = newUser;
+    // generate token and send through API
 
     next();
   } catch (err) {
@@ -86,8 +89,6 @@ const userLogout = function(req, res, next) {
 };
 
 module.exports = {
-  signupController,
-  signinController,
   userSignin,
   userSignup,
   userLogout,

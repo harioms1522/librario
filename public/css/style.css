@@ -100,13 +100,14 @@ header {
   } */
 
 .container {
-  max-width: 1200px;
+  max-width: 1500px;
   margin: 0.6rem auto;
   height: 90%;
   background-color: #c7f9cc;
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-items: center;
   border-radius: 12px;
   padding: 3rem 7rem;
 }
@@ -116,6 +117,8 @@ header {
   font-weight: 600;
   margin: 0.6rem;
   padding-bottom: 0.6rem;
+  align-self: center;
+  justify-self: center;
 }
 
 .grid-books {
@@ -127,6 +130,8 @@ header {
   gap: 2rem;
   grid-template-columns: 1fr 1fr;
   padding: 2.2rem;
+  align-items: stretch;
+  justify-items: center;
 }
 
 .card-book {
@@ -134,10 +139,10 @@ header {
   /* width: 50rem;
     height: 25rem; */
   display: grid;
-  gap: 1rem;
   grid-template-columns: 10rem 1fr;
+  grid-template-rows: 1fr 3rem;
   box-shadow: 5px 1px 15px 3px #333;
-  border-radius: 12px;
+  border-radius: 9px;
 }
 
 .book-img {
@@ -147,7 +152,7 @@ header {
 .card-book img {
   width: 100%;
   /* z-index: -1; */
-  border-radius: 12px;
+  border-radius: 9px;
   object-fit: cover;
   height: 100%;
 }
@@ -168,6 +173,20 @@ header {
   font-size: 0.9rem;
   text-align: match-parent;
   overflow-wrap: break-word;
+}
+
+.subscribe-btn {
+  grid-column: 1/-1;
+  justify-self: center;
+  align-self: center;
+}
+
+.btn {
+  border: none;
+  background-color: #22577a;
+  color: #fff;
+  padding: 0.4rem 0.6rem;
+  border-radius: 9px;
 }
 
 /* .card-book {
