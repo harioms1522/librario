@@ -70,6 +70,10 @@ app.route("/auth/logout").get(userLogout);
 // Books API
 app.use("/api/v1/books", booksRouter);
 app.use("/api/v1/users", usersRouter);
-app.route("/transaction").post(createTransaction);
+app.route("api/v1/transaction").post(createTransaction);
+
+// AUTH API
+app.route("/api/v1/sign-up").post(userSignup);
+app.route("/api/v1/sign-in").post(userSignin);
 
 module.exports = app;

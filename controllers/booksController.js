@@ -16,7 +16,7 @@ const getAllBooks = async function(req, res, next) {
 
     // Handling filter according to the field values
     //  We want to exclude certain fields
-    const excludedFields = ["page", "sort", "limit", "fields"];
+    const excludedFields = ["page", "sort", "limit", "fields", "_"]; // adding _ for the data tables ajax requests
     excludedFields.forEach((curr) => delete queryObj[curr]);
 
     //implementing for the gte lte lt and gt features
@@ -57,9 +57,7 @@ const getAllBooks = async function(req, res, next) {
 
     res.status(200).json({
       status: "Success",
-      data: {
-        books,
-      },
+      data: books,
     });
   } catch (err) {
     res.status(404).json({ status: "Failure", error: { err } });

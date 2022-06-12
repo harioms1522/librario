@@ -1,6 +1,6 @@
 $(function() {
   $.get("http://127.0.0.1:8000/api/v1/books", function(data, status) {
-    const booksObj = [...data.data.books];
+    const booksObj = [...data.data];
 
     // /////////////////////////////////
     // TEMPLATE ACCORDING TO THE  DATA RECEIVED
@@ -9,14 +9,55 @@ $(function() {
 
     $("#main-table").DataTable({
       data: booksObj,
+
+      // After the tables is rendered
+      fnDrawCallback: function(settings) {
+        // Deleting a book using the API
+        $(".delete-book-btn").on("click", function(e) {
+          const bookId = $(this).attr("data");
+          $.ajax({
+            url: `http://127.0.0.1:8000/api/v1/books/${bookId}`,
+            method: "DELETE",
+          })
+            .done((msg) => alert("This book is deleted"))
+            .fail((errMsg) => alert(errMsg));
+        });
+      },
       columns: [
         { data: "name" },
         { data: "assignedTo" },
         { data: "price" },
         { data: "category" },
-        { data: "summary" },
+        {
+          data: "summary",
+          render: function(data, type, row) {
+            if (type == "display" && data.length > 40) {
+              return (
+                `<span class='imp-text'}>` + data.substr(0, 40) + "...</span>"
+              );
+            }
+            return data;
+          },
+        },
         { data: "reviews" },
-        { data: "createdAt" },
+        {
+          data: "createdAt",
+          render: function(data, type, now) {
+            const date = new Date(data).toDateString();
+            if (type == "display" || type == "filter") {
+              console.log(date);
+              return `${date}`;
+            }
+            return data;
+          },
+        },
+        {
+          render: function(data, type, row) {
+            if (type == "display") {
+              return `<a class='signup delete-book-btn' data='${row._id}' style='text-decoration:none'>DELETE</a>`;
+            }
+          },
+        },
       ],
     });
 
@@ -91,6 +132,7 @@ $(function() {
     });
   });
 
+  // /////////////////////////////////////////////////////
   // book creation form
   $("#book-creation-form").on("submit", (e) => {
     e.preventDefault();

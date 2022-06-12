@@ -12,6 +12,6 @@ router.route("/home").get(homePageController);
 router.route("/admin-panel").get(adminPanelHomePageController);
 router.route("/signup").get(signupController);
 router.route("/signin").get(signinController);
-router.route("/home/user");
+router.route("/home/user").get();
 
 module.exports = router;
