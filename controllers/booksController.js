@@ -80,6 +80,7 @@ const getAllBooks = async function(req, res, next) {
           },
         },
       },
+      // Getting all the data for the user
       {
         $lookup: {
           from: "users",
@@ -88,12 +89,6 @@ const getAllBooks = async function(req, res, next) {
           as: "user",
         },
       },
-      // {
-      //   $lookup: {
-      //     from: "users",
-      //     localField:,
-      //   },
-      // },
     ]);
 
     res.status(200).json({
