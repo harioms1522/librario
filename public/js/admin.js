@@ -1,4 +1,31 @@
 $(function() {
+  // Utility functions
+
+  // to format the row to be included using the button in the assigned to
+  function format(d) {
+    // `d` is the original data object for the row
+    return (
+      '<table cellpadding="5" cellspacing="0" border="0" style="padding-left:50px;">' +
+      "<tr>" +
+      "<td>Full name:</td>" +
+      "<td>" +
+      d.name +
+      "</td>" +
+      "</tr>" +
+      "<tr>" +
+      "<td>Extension number:</td>" +
+      "<td>" +
+      d.extn +
+      "</td>" +
+      "</tr>" +
+      "<tr>" +
+      "<td>Extra info:</td>" +
+      "<td>And any further details here (images etc)...</td>" +
+      "</tr>" +
+      "</table>"
+    );
+  }
+
   $.get("http://127.0.0.1:8000/api/v1/books", function(data, status) {
     const booksObj = [...data.data];
 
@@ -7,8 +34,23 @@ $(function() {
     // create an html and add that into the table container to be selected in the next stage
     // ////////////////////////////////////////////////
 
-    $("#main-table").DataTable({
+    let table = $("#main-table").DataTable({
+      // Data
       data: booksObj,
+
+      // length menu options
+      lengthMenu: [
+        [5, 10, 25, 50, -1],
+        [5, 10, 25, 50, "All"],
+      ],
+
+      // implementing search only when enter key to search
+      search: {
+        return: true,
+      },
+
+      // DOM POSITIONING
+      dom: "lft<'table-foot'ip>",
 
       // After the tables is rendered
       fnDrawCallback: function(settings) {
@@ -23,10 +65,38 @@ $(function() {
             .fail((errMsg) => alert(errMsg));
         });
       },
+
+      // Columns configuration with the use of render to get the desired formatting
       columns: [
         { data: "name" },
-        { data: "assignedTo" },
-        { data: "price" },
+        {
+          data: "assignedTo",
+          render: function(data, type, row) {
+            return row.assignedTo.length;
+          },
+        },
+
+        // { data: "assignedTo" },
+        // adding a radio button that will show the rows below to show the info about the user
+        // {
+        //   data: "assignedTo",
+        //   render: function(data, type, row) {
+        //     return '<input type="radio" id="users-toggle" name="Users" value="visible"></input>';
+        //   },
+        // },
+
+        {
+          className: "dt-control",
+          orderable: false,
+          data: null,
+          defaultContent: "",
+        },
+
+        {
+          data: "price",
+          // To make it not searchable
+          searchable: false,
+        },
         { data: "category" },
         {
           data: "summary",
@@ -54,11 +124,39 @@ $(function() {
         {
           render: function(data, type, row) {
             if (type == "display") {
-              return `<a class='signup delete-book-btn' data='${row._id}' style='text-decoration:none'>DELETE</a>`;
+              return `<a class='delete-book-btn' data='${row._id}' style='text-decoration:none'>DELETE</a>`;
             }
           },
         },
       ],
+    });
+
+    // Add the event listener for the additional infor od the table
+    $("#main-table tbody").on("click", "td.dt-control", function() {
+      console.log("HERE");
+      let tr = $(this).closest("tr");
+
+      const subTable =
+        "<table class='sub-table'><thead><tr><th>Name</th><th>Email</th></tr></thead></table>";
+      let row = table.row(tr);
+
+      console.log(row.data().user);
+
+      if (row.child.isShown()) {
+        // This row is already open - close it
+        row.child.hide();
+        tr.removeClass("shown");
+      } else {
+        // Open this row
+        row.child(subTable).show();
+        $(".sub-table").DataTable({
+          data: row.data().user,
+          dom: "t",
+          columns: [{ data: "name" }, { data: "email" }],
+        });
+        // row.child(format(row.data())).show();
+        tr.addClass("shown");
+      }
     });
 
     // html = ejs.render('<%= people.join(", "); %>', { books: data.data });
@@ -77,6 +175,10 @@ $(function() {
 
     $("#stats-table-book-count-by-user").DataTable({
       data: booksCountByUser,
+
+      //DOM Structure of the table components
+      dom: "<'table-stats-1'lip<'table't>frp>",
+
       columns: [{ data: "_id" }, { data: "count" }],
     });
 

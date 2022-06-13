@@ -63,13 +63,26 @@ body {
   grid-column: 1/-1;
   font-size: 0.9rem;
   padding: 1.6rem 3.2rem;
-  background-color: white;
+  /* background-color: white; */
   /* margin: 8rem 3.2rem; */
 }
 
 table {
   width: 100%;
   /* height: 100%; */
+}
+
+.table-top {
+  background-color: #c7f9cc;
+  color: #555;
+}
+
+.delete-book-btn {
+  color: red;
+  background-color: #80ed99;
+  padding: 0.3rem;
+  border-radius: 7px;
+  font-weight: 500;
 }
 /* .main-table {
   width: 100%;

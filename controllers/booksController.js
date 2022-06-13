@@ -3,9 +3,114 @@ const Book = require("../models/bookModel");
 // which will then be passed in the req
 
 // For API
+
+// Get all books call using the aaggregation framework
 const getAllBooks = async function(req, res, next) {
   try {
+    // get the query string object
+    const queryObj = { ...req.query };
+
+    // Handling filter according to the field values
+    //  We want to exclude certain fields
+    const excludedFields = ["page", "sort", "limit", "fields", "_"]; // adding _ for the data tables ajax requests
+    excludedFields.forEach((curr) => delete queryObj[curr]);
+
+    //implementing for the gte lte lt and gt features
+    let queryStr = JSON.stringify(queryObj);
+    queryStr = queryStr.replace(/\b(gte|lte|gt|lt)\b/g, (match) => `$${match}`);
+
+    /////////////////////////////////////////
+    // for sorting
+    let sortQuery = {};
+    if (req.query.sort) {
+      let sortFields = [];
+      sortFields = req.query.sort.split(",");
+      sortFields.forEach((curr, index) => {
+        if (curr.startsWith("-")) {
+          curr = curr.replace("-", "");
+          sortQuery[curr] = -1;
+        } else {
+          sortQuery[curr] = 1;
+        }
+      });
+    } else {
+      sortQuery = { createdAt: -1 };
+    }
+    // console.log(sortQuery);
+
+    // ////////////////////////////////////////////////////
+    //field projection
+    let projectionQuery = {};
+    if (req.query.fields) {
+      let projectionFields = req.query.fields.split(",");
+      projectionFields.forEach((curr, index) => {
+        if (curr.startsWith("-")) {
+          curr = curr.replace("-", "");
+          projectionQuery[curr] = -1;
+        } else {
+          projectionQuery[curr] = 1;
+        }
+      });
+    } else {
+      projectionQuery = { img: 0 };
+    }
+    console.log(projectionQuery);
+
+    // //////////////////////////////////////////////
+    // Pagination
+    const page = req.query.page * 1 || 1;
+    const limit = req.query.limit * 1 || 20;
+    const skip = (page - 1) * limit;
+
+    const books = await Book.aggregate([
+      { $match: JSON.parse(queryStr) },
+      { $sort: sortQuery },
+      { $project: projectionQuery },
+      { $skip: skip },
+      { $limit: limit },
+      // Adding the assigned to array converted to object IDs
+      {
+        $addFields: {
+          userObjectIds: {
+            $map: {
+              input: "$assignedTo",
+              as: "user",
+              in: { $toObjectId: "$$user" },
+            },
+          },
+        },
+      },
+      {
+        $lookup: {
+          from: "users",
+          localField: "userObjectIds",
+          foreignField: "_id",
+          as: "user",
+        },
+      },
+      // {
+      //   $lookup: {
+      //     from: "users",
+      //     localField:,
+      //   },
+      // },
+    ]);
+
+    res.status(200).json({
+      status: "Success",
+      data: books,
+    });
+  } catch (err) {
+    res.status(404).json({ status: "Failure", error: { err } });
+  }
+};
+
+// This way we can not get the data of the users assigned
+const getAllBooks1 = async function(req, res, next) {
+  try {
     // This is the query
+
+    // lets get the user data in the books query
     let books = Book.find();
 
     /////////////////////////////////////////////////
