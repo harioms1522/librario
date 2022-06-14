@@ -49,6 +49,16 @@ $(function() {
         return: true,
       },
 
+      // Showing the row in highlighted form when there is the price above a certain value
+      // if book is assigned to more than or equal to 3 people this should be highlighted
+      createdRow: function(row, data, index) {
+        // console.log(data);
+        if (data.assignedTo.length >= 3) {
+          $(row).css("background-color", "#80ed99");
+          // $(row).addClass("highlighted-row");
+        }
+      },
+
       // DOM POSITIONING
       dom: "lft<'table-foot'ip>",
 
@@ -62,7 +72,7 @@ $(function() {
             method: "DELETE",
           })
             .done((msg) => alert("This book is deleted"))
-            .fail((errMsg) => alert(errMsg));
+            .fail((errMsg) => alert("This book doesn't existss"));
         });
       },
 
@@ -91,6 +101,7 @@ $(function() {
           data: null,
           defaultContent: "",
         },
+        { data: "author" },
 
         {
           data: "price",
@@ -115,7 +126,7 @@ $(function() {
           render: function(data, type, now) {
             const date = new Date(data).toDateString();
             if (type == "display" || type == "filter") {
-              console.log(date);
+              // console.log(date);
               return `${date}`;
             }
             return data;
@@ -131,16 +142,16 @@ $(function() {
       ],
     });
 
-    // Add the event listener for the additional infor od the table
+    // Add the event listener for the additional info of the user added as a table
     $("#main-table tbody").on("click", "td.dt-control", function() {
-      console.log("HERE");
+      // console.log("HERE");
       let tr = $(this).closest("tr");
 
       const subTable =
         "<table class='sub-table'><thead><tr><th>Name</th><th>Email</th></tr></thead></table>";
       let row = table.row(tr);
 
-      console.log(row.data().user);
+      // console.log(row.data().user);
 
       if (row.child.isShown()) {
         // This row is already open - close it
@@ -149,6 +160,8 @@ $(function() {
       } else {
         // Open this row
         row.child(subTable).show();
+
+        // create the data-table for this added html
         $(".sub-table").DataTable({
           data: row.data().user,
           dom: "t",
@@ -158,9 +171,10 @@ $(function() {
         tr.addClass("shown");
       }
     });
-
-    // html = ejs.render('<%= people.join(", "); %>', { books: data.data });
   });
+
+  // /////////////////////////////////////////////////////////////////
+  // for stats tables onlu one API call using facets is okay
 
   $.get("http://127.0.0.1:8000/api/v1/books/getBooksStats", function(
     data,
@@ -203,6 +217,19 @@ $(function() {
     $("#stats-table-per-user-books").DataTable({
       data: userBookInfo,
       columns: [{ data: "name" }, { data: "email" }, { data: "count" }],
+
+      // using footer callback to add all the count
+      footerCallback: function(tfoot, data, start, end, display) {
+        console.log(data);
+        const api = this.api();
+
+        // calculating total using API feature of the DataTables
+        const totalAssignments = api
+          .column(2)
+          .data()
+          .reduce((a, b) => a + b, 0);
+        $(api.column(2).footer()).html(`TotalAssignments: ${totalAssignments}`);
+      },
     });
 
     // //////////////////////

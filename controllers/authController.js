@@ -85,7 +85,7 @@ const userSignin = async function(req, res, next) {
 };
 
 const userLogout = function(req, res, next) {
-  req.cookie("jwt", "loggedOut", {
+  res.cookie("jwt", "loggedOut", {
     expire: new Date(Date.now() + 10 * 1000),
     httpOnly: true,
   });
