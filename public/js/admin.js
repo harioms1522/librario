@@ -191,7 +191,7 @@ $(function() {
       data: booksCountByUser,
 
       //DOM Structure of the table components
-      dom: "<'table-stats-1'lip<'table't>frp>",
+      dom: "<'table-stats-1'i<'table't>p>",
 
       columns: [{ data: "_id" }, { data: "count" }],
     });
@@ -216,6 +216,7 @@ $(function() {
 
     $("#stats-table-per-user-books").DataTable({
       data: userBookInfo,
+      dom: "tp",
       columns: [{ data: "name" }, { data: "email" }, { data: "count" }],
 
       // using footer callback to add all the count
